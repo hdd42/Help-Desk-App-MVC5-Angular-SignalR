@@ -1,0 +1,59 @@
+﻿@model HelpDeskTicketingApp.Models.AdmIssueViewModel
+
+@{
+    ViewBag.Title = "IssueDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>IssueDetails</h2>
+
+<div>
+    <h4>Issue</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.IssueType.IssueTypeDesc)
+        </dt>
+        
+        <dd>
+            @Html.DisplayFor(model => model.IssueType.IssueTypeDesc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.FirstName)
+        </dt>
+        
+        <dd>
+            @Html.DisplayFor(model => model.User.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateReported)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateReported)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IssueDesc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IssueDesc)
+        </dd>
+
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

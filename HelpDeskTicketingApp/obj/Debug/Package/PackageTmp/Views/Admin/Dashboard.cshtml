@@ -1,0 +1,212 @@
+﻿@model HelpDeskTicketingApp.Models.AdminDashboardVidewModel
+
+@{
+    ViewBag.Title = "Index";
+
+}
+
+<h2>@ViewBag.email</h2>
+
+
+<div class="row">
+
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-aqua">
+            <div class="inner">
+                <h3 id="totalTicketCountBox">
+                    @Model.TotalTicketCount
+                </h3>
+                <p>
+                    Tickets Created so Far
+                </p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-archive"></i>
+            </div>
+            <a href="/Admin/Tickets?status=All" class="small-box-footer ">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-orange">
+            <div class="inner">
+                <h3 id="totalTicketAssignedCountBox">
+                    @Model.TotalTicketAssignedCount
+                </h3>
+                <p>
+                    Assigned to staff
+                </p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-android-clock"></i>
+            </div>
+            <a href="/Admin/Tickets?status=Assigned" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-red">
+            <div class="inner">
+                <h3 id="totalTicketUnsolvedCountBox">
+                    @Model.TotalTicketUnsolvedCount
+                </h3>
+                <p>
+                    Tickets to assign
+                </p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-android-alarm"></i>
+            </div>
+            <a href="/Admin/Tickets?status=UnAssigned" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-xs-6">
+
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-bullhorn"></i>
+                <h3 class="box-title">Online User<label id="onlineUserCount" class="label label-primary">@ViewBag.OnlineUser.Count</label></h3>
+            </div><!-- /.box-header -->
+            <div class="box-body">
+                <ol id="onlineUsers">
+                      @foreach (var item in ViewBag.OnlineUser as List<string>)
+                      {
+                          <li id="@item.Replace('@', '_').Replace('.','_')">@item</li>
+                      }             
+                </ol>
+                
+            </div><!-- /.box-body -->
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-md-12">
+   @{Html.RenderAction("TimeLine", "Admin");}
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+    <script src="/signalr/hubs"></script>
+<script src="~/Scripts/jquery-ui.min.js"></script>
+    <script>
+        $(function () {
+
+            var hub = $.connection.echo;
+
+            hub.client.newEntryTimeLine = function (data) {
+                var coming = JSON.parse(JSON.stringify(data));
+                var li ='<li class="time-label"><span  class="bg-red">';
+                li +=formatDate(coming.TimeHappened,true) + "</span></li>";
+                li+="<li><i class='fa fa-envelope bg-blue'></i>";
+                li += '<div class="timeline-item">';
+                li += '<span class="time"><i class="fa fa-clock-o"></i>' +formatDate(coming.TimeHappened,false) + '</span>';
+                li += ' <h3 class="timeline-header"><a href="#">' + coming.Title + '</a></h3>';
+                li += '<div class="timeline-body">'+coming.Description;
+                li+='</div>';
+                li += ' <div class="timeline-footer">';
+                li += '<a class="btn btn-primary btn-xs">Read More</a>';
+                li += ' <label class=" label label-primary">' + coming.UserName + '</label>';
+                li += ' </div></div>';
+                var target = $('#timeline');
+
+                li += "</li>";
+                target.prepend(li);
+                $('.timeline-item:first').effect("highlight", { color: "#D9863F" }, 3000);
+                console.log("Received : " +coming);
+            };
+            
+            //totalTicketAssignedCountBox totalTicketCountBox totalTicketUnsolvedCountBox
+            hub.client.newTicketAdded = function () {
+                var target = $("#totalTicketCountBox");
+                var currentCOunt = parseInt(target.text());
+                target.text(currentCOunt + 1);
+                target.effect("highlight", { color: "#D9863F" }, 3000);
+            }
+
+
+            hub.client.userConnected = function (userName) {
+                
+                var li = "<li id='" + userName.replace('@@', '_').replace('.','_') + "'>";
+                li += userName;
+                li += "</li>";
+                console.log(userName);
+                var target = $('#onlineUsers');
+              
+                var userCount =parseInt($('#onlineUserCount').text());
+                $('#onlineUserCount').text(userCount + 1);
+
+                
+                target.append(li);
+               
+            };
+   
+            hub.client.userDisconnected = function (userName) {
+
+                removeLi(userName);
+
+                var userCount = parseInt($('#onlineUserCount').text());
+                $('#onlineUserCount').text(userCount - 1);
+                
+            };
+
+            $.connection.hub
+                .start();
+            //    .done(function () {
+            //      //hub.server.say('Hello SignalR!');                 
+
+            //});
+
+            var removeLi = function (id) {
+                var target_id = id.replace('@@', '_').replace('.', '_');
+                var target = document.getElementById(target_id);
+                target.setAttribute('style','display:none');
+               
+          
+                //console.log(taget);
+            };
+           // Received : {"EntryId":0,"UserName":"jimmisel@yahoo.com","Title":"User has been updated",
+           //"Description":"User has been updated! Name :  Coral Morris",
+           //"TimeHappened":"2015-01-26T01:37:30.8695398-05:00",
+           //"Notes":"Updated from admin Panel","EntryType":"Edit"}
+            function formatDate(input, dateOnly) {
+
+                if (dateOnly) {
+                    var formattedDate = new Date(input);
+                    var d = formattedDate.getDate();
+                    var m = formattedDate.getMonth();
+                    m += 1;  // JavaScript months are 0-11
+                    var y = formattedDate.getFullYear();
+
+                    return d + "." + m + "." + y;
+                }
+                else {
+                    var formattedDate = new Date(input);
+                    var h = formattedDate.getHours();
+                    var m = formattedDate.getMinutes();
+                    if (m < 10) {
+                        m = '0' + m;
+                    }
+                    var sc =formattedDate.getSeconds();  // JavaScript months are 0-11
+                   
+                    return h + ":" + m + ":" +sc;
+                }
+                
+            }
+        });
+    </script>>
+}

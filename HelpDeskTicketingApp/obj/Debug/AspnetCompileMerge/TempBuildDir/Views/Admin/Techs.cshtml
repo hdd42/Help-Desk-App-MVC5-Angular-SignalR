@@ -1,0 +1,45 @@
+﻿@using HelpDeskTicketingApp.Models
+@model AdmUsersViewModel
+@{
+    ViewBag.Title = "Techs";
+}
+
+
+
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <h2>Technicians</h2>
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>  
+                    <th>Username</th>  
+                    <th></th>          
+                    <th></th>
+                    <th></th>
+                </tr>
+                
+                @foreach(var u in Model.Users)
+                {
+                    <tr>
+                        <td>@u.FirstName</td>
+                        <td>@u.LastName</td>
+                        <td>@u.Email</td>
+                        <td>@u.UserName</td>
+                        <td>@(Html.ActionLink("View Tickets", "Tickets", new { userId = u.UserId }))</td>
+                        <td>@(Html.ActionLink("Delete Tech", "DeleteTech", new { userId = u.UserId }))</td>
+                        <td>@(Html.ActionLink("Edit Tech", "AddUpdateTech", new { userId = u.UserId }))</td>
+                    </tr>
+                    
+                }
+
+            </table>
+            <button type="button">
+                @(Html.ActionLink("Add User", "AddUpdateTech"))
+            </button>
+        </div>       
+        
+    </div>
+</div>

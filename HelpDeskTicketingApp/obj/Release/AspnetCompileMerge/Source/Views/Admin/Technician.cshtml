@@ -1,0 +1,95 @@
+﻿@using HelpDeskTicketingApp.Models
+@model AdmUserIssuesViewModel
+@{
+    ViewBag.Title = "UserIssues";
+}
+    <div class="col-md-12 column">
+        <h2>@Model.UserName</h2>
+        @if (Model.AssignedIssues.Count > 0)
+        {
+        <h3>Assigned Issues</h3>
+        <table id="assignedTable" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Reported By</th>
+                    <th>Issue Type</th>
+                    <th>Description</th>
+                    <th>Date Reported</th>
+                    <th>Date Resolved</th>
+                    <th>Assigned</th>
+                    <th>Operations</th>
+                </tr>
+            </thead>
+        
+        <tbody>
+            @foreach (var i in Model.AssignedIssues)
+            {
+                <tr>
+                    <td>@(i.User.FirstName + " " + i.User.LastName)</td>
+                    <td>@i.IssueType.IssueTypeDesc</td>
+                    <td>@i.IssueDesc</td>
+                    <td>@i.DateReported</td>
+                    <td>@i.DateResolved</td>
+                    <td>@i.IsAssigned</td>
+                    <td>
+                        @(Html.ActionLink("Edit/View Ticket", "UpdateTicket", new { id = i.IssueId }, new { @class = "btn btn-info btn-xs " }))
+                        @(Html.ActionLink("Delete Ticket", "DeleteTicket", new { id = i.IssueId, userId = i.AssignToId }, new { @class = "btn btn-danger btn-xs  " }))
+                    </td>
+                </tr>
+
+            }
+        </tbody>      
+
+    </table>
+        }
+        @if (Model.ReportedIssues.Count > 0)
+        {
+            <h3>Reported Issues</h3>
+            <table id="reportedTable" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Reported By</th>
+                        <th>Issue Type</th>
+                        <th>Description</th>
+                        <th>Date Reported</th>
+                        <th>Date Resolved</th>
+                        <th>Assigned</th>
+                        <th>Operations</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var i in Model.ReportedIssues)
+                    {
+                        <tr>
+                            <td>@(i.User.FirstName + " " + i.User.LastName)</td>
+                            <td>@i.IssueType.IssueTypeDesc</td>
+                            <td>@i.IssueDesc</td>
+                            <td>@i.DateReported</td>
+                            <td>@i.DateResolved</td>
+                            <td>@i.IsAssigned</td>
+                            <td>
+                                @(Html.ActionLink("Edit/View Ticket", "UpdateTicket", new { id = i.IssueId }, new { @class = "btn btn-info btn-xs " }))
+                                @(Html.ActionLink("Delete Ticket", "DeleteTicket", new { id = i.IssueId, userId = i.AssignToId }, new { @class = "btn btn-danger btn-xs " }))
+                            </td>
+                        </tr>
+
+                    }
+                </tbody>              
+
+            </table>
+        }
+
+    </div>
+
+
+
+@section Scripts {
+    <script>
+
+        $(function () {
+            $("#assignedTable").dataTable();
+            $("#reportedTable").dataTable();
+        });
+    </script>
+    
+    }

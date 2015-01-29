@@ -1,0 +1,38 @@
+﻿@using HelpDeskTicketingApp.Models
+@model  ContactIssueViewModel
+
+@{
+    ViewBag.Title = "Contact";
+}
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+
+@using (Html.BeginForm())
+{
+    <div class="col-md-6">
+
+        <div class="form-group">
+            @Html.TextAreaFor(m => m.IssueDescription, new { @class = "form-control" })
+        </div>
+        <br />
+        <input type="submit" class="btn btn-default" value="Submit Ticket" />
+    </div>
+    <br/>
+}
+<br/>
+
+<div class="col-md-12">
+    <br/>
+    <address>
+        One Microsoft Way<br />
+        Redmond, WA 98052-6399<br />
+        <abbr title="Phone">P:</abbr>
+        425.555.0100
+    </address>
+
+    <address>
+        <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
+        <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
+    </address>
+
+</div>

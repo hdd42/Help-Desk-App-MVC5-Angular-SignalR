@@ -1,0 +1,139 @@
+﻿@using HelpDeskTicketingApp.Models
+@model AdmUsersListViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+    @if (Model.Techs.Count > 0)
+    {
+        <div class="col-md-12 column">
+            <h2>Technicians</h2>
+            <div class="box-body ">
+                <table class="table table-striped table-bordered" id="techUsersTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Username</th>
+                            <th>Operations</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var u in Model.Techs)
+                        {
+                            <tr>
+                                <td>@(u.FirstName + " " + u.LastName)</td>
+                                <td>@u.Email</td>
+                                <td>@u.UserName</td>
+                                <td>
+                                    @(Html.ActionLink("View Tickets", "Technician", new { userId = u.UserId }, new { @class = "btn btn-info btn-xs " }))
+                                    @(Html.ActionLink("Delete Tech", "DeleteTech", new { userId = u.UserId }, new { @class = "btn btn-danger btn-xs " }))
+                                    @(Html.ActionLink("Edit Tech", "AddUpdateTech", new { userId = u.UserId }, new { @class = "btn btn-primary btn-xs " }))
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+            </div>
+    }
+    @if (Model.Admins.Count > 0)
+    {
+        <div class="col-md-12 column">
+            <h2>Administrators</h2>
+            <div class="box-body">
+                <table class="table table-striped table-bordered" id="adminUsersTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Username</th>
+                            <th>Operations</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var u in Model.Admins)
+                {
+                        <tr>
+                            <td>@(u.FirstName + " " + u.LastName)</td>
+                            <td>@u.Email</td>
+                            <td>@u.UserName</td>
+
+
+
+                            <td>
+                            @(Html.ActionLink("View Tickets", "Technician", new { userId = u.UserId }, new { @class = "btn btn-info btn-xs " }))
+                            @(Html.ActionLink("Delete Admin", "DeleteTech", new { userId = u.UserId }, new { @class = "btn btn-danger btn-xs " }))
+                            @(Html.ActionLink("Edit Admin", "AddUpdateTech", new { userId = u.UserId }, new { @class = "btn btn-primary btn-xs " }))
+                            </td>
+                        
+                        </tr>
+
+                }
+                        </tbody>
+                </table>
+                </div>
+            </div>
+    }
+    @if (Model.Generals.Count > 0)
+    {
+        <div class="col-md-12 column">
+            <h2>General Users</h2>
+            <div class="box-body ">
+                <table class="table table-bordered table-striped dataTable" id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Username</th>
+                            <th>Operations</th>
+                         
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var u in Model.Generals)
+                    {
+                            <tr>
+                                <td>@(u.FirstName + " " + u.LastName)</td>
+                                <td>@u.Email</td>
+                                <td>@u.UserName</td>
+                                <td>
+                                    @(Html.ActionLink("View Tickets", "Technician", new { userId = u.UserId }, new { @class = "btn btn-info btn-xs " }))
+                                    @(Html.ActionLink("Delete User", "DeleteTech", new { userId = u.UserId }, new { @class = "btn btn-danger btn-xs " }))
+                                    @(Html.ActionLink("Edit User", "AddUpdateTech", new { userId = u.UserId }, new { @class = "btn btn-primary btn-xs " }))
+                                </td>
+                            </tr>
+
+                    }
+                    </tbody>
+                </table>
+                </div>
+            </div>
+    }
+    <div class="col-md-12 column">
+        @(Html.ActionLink("Add User", "AddUpdateTech", null, new { @class = "btn btn-info" }))
+    </div>
+
+
+
+
+
+    @section Scripts {
+
+        <script>
+
+            $(function () {
+
+
+                $('#usersTable').dataTable();
+                $('#adminUsersTable').dataTable();
+                $('#techUsersTable').dataTable();
+            });
+
+
+        </script>>
+    }

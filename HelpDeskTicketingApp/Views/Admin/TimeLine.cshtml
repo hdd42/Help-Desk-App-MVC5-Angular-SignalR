@@ -1,0 +1,46 @@
+﻿@model IEnumerable<HelpDeskTicketingApp.Models.TimeLine>
+
+@{
+    Layout = null;
+    ViewBag.Title = "TimeLine";
+}
+
+<h2>What is happening !</h2>
+
+<ul class="timeline" id="timeline">
+
+    @foreach (var item in Model)
+    {
+        <li class="time-label">
+            <span class="bg-red">
+               @item.TimeHappened.Value.ToShortDateString()
+            </span>
+        </li>
+    <!-- /.timeline-label -->
+    <!-- timeline item -->
+        <li>
+            <i class="fa fa-envelope bg-blue"></i>
+            <div class="timeline-item">
+                <span class="time"><i class="fa fa-clock-o"></i>@item.TimeHappened.Value.ToShortTimeString()</span>
+                <h3 class="timeline-header"><a href="#">@item.Title</a></h3>
+                <div class="timeline-body">
+                  @item.Description
+                </div>
+                <div class="timeline-footer">
+                    
+                    <label class=" label label-primary">@item.UserName</label>
+                </div>
+            </div>
+        </li>
+
+    }
+
+    <!-- timeline time label -->
+    
+    <!-- /.timeline-label -->
+
+    <li>
+        <i class="fa fa-clock-o"></i>
+    </li>
+</ul>
+

@@ -1,0 +1,84 @@
+﻿@using HelpDeskTicketingApp.Models
+@model AdmIssuesViewModel
+@{
+    ViewBag.Title = "Index";
+}
+<div class="col-md-12 column">
+    <h2>Tickets</h2>
+    <div class="box-body">
+
+        <table id="TicketsTable" class="table table-bordered table-striped dataTable">
+            <thead>
+                <tr>
+                    <th>Reported By</th>
+                    <th>Issue Type</th>
+                    <th>Description</th>
+                    <th>Date Reported</th>
+                    <th>Date Resolved</th>
+                    <th>Assigned</th>
+                    <th>Operations</th>
+                 
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var i in Model.Issues)
+                {
+                    <tr>
+                        <td>@(Html.ActionLink(i.User.FirstName + " " + i.User.LastName, "Technician", new { userId = @i.User.UserId }))</td>
+                        <td>@i.IssueType.IssueTypeDesc</td>
+                        <td>@i.IssueDesc</td>
+                        <td>@i.DateReported</td>
+                        <td>
+                            <span class="label @(i.DateResolved != null ? "label-success" : "label-danger")">@(i.DateResolved != null ? i.DateResolved.Value.ToShortDateString() : "Fix Me!")</span>
+                            @{if (i.DateResolved == null)
+                            {
+                                <span class="glyphicon glyphicon-wrench"></span>
+                            }
+                            else
+                            {
+                                <span class="glyphicon glyphicon-thumbs-up"></span>
+                            }
+                            }
+                        </td>
+                        <td>@(i.IsAssigned ? "Yes" : "Not Yet!")</td>
+                        <td>
+                            <a href="/Admin/UpdateTicket/@i.IssueId" data-placement="top" data-toggle="popover" data-trigger="hover"
+                               title="Details" data-content="See details or update ticket?">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </a>
+                        
+                            <a href="/Admin/DeleteTicket/@i.IssueId?userId=none" data-placement="top" data-toggle="popover" data-trigger="hover"
+                               title="Delete Ticket" data-content="Are you sure to delete this ticket?">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </a>
+                      
+                       
+                        </td>
+                    </tr>
+
+                }
+
+            </tbody>
+        </table>
+
+    </div>
+
+    @(Html.ActionLink("Technicians", "Index", null, new { @class = "btn btn-default" }))
+
+</div>
+@section Scripts {
+    <script>
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+        })
+
+    </script>
+        
+
+    }
+
+
+
+
+     
+           

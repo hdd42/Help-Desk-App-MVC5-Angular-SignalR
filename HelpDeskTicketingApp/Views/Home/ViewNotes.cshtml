@@ -1,0 +1,55 @@
+﻿@using HelpDeskTicketingApp.Models
+@model  UpdateTicket
+@{
+    ViewBag.Title = "ViewNotes";
+}
+
+<div class="row">
+
+    <div class="col-lg-5">
+
+        <div class="box box-solid">
+            <div class="box-header">
+                <i class="fa fa-text-width"></i>
+                <h3 class="box-title">Issue</h3>
+            </div><!-- /.box-header -->
+            <div class="box-body">
+                <blockquote>
+
+
+                    <p>@Model.IssueDescription</p>
+      
+                </blockquote>
+            </div><!-- /.box-body -->
+        </div>
+
+    </div>
+    <div class="col-lg-5">
+
+        <div class="box-body">
+            <dl class="dl-horizontal">
+                <dt>Issue Type : </dt>
+                <dd>
+                    @foreach (var it in Model.Types)
+                    {
+                        if (Model.SelectedIssueTypeId == it.Value)
+                        {
+                            Model.IssueType = it.Display;
+                        }
+                    }
+                    @Model.IssueType
+                </dd>
+                <dt>How it was fixed : </dt>
+                <dd>
+                 @Model.ResolutionDescription
+                </dd>
+              
+            </dl>
+        </div>
+
+
+    </div>
+
+</div>
+
+

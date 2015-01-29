@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    <link href="//code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/morris.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+
+
+
+<body class="skin-blue">
+    <!-- header logo: style can be found in header.less -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-box" id="login-box">
+
+                @RenderBody()
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    <!-- ./wrapper -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+
+    @RenderSection("scripts", required: false)
+
+
+
+
+</body>
+</html>
+

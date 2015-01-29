@@ -1,0 +1,155 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div ng-app="helpDeskApp" ng-controller="MainController as MainCtrl">
+
+    <div class=" row">
+        <div class="col-md-6">
+
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Quick Search</h3>
+                </div><!-- /.box-header -->
+                <!-- form start -->
+                <div role="form">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Search on Stackoverflow.com</label>
+                            <input ng-model="SOF.searchInput" type="text" class="form-control" id="seacrhOnSOF" placeholder="Enter Search Criteria">
+                        </div>
+
+                    </div><!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <button ng-click="MainCtrl.searchOnSOF(SOF.searchInput)" class="btn btn-primary ">Relevant Search</button>
+                        <button ng-click="MainCtrl.searchOnSOFinTitle(SOF.searchInput)" class="btn btn-primary ">Search in Titles</button>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="box box-info">
+                <div class="box-header">
+                    <i class="fa fa-bullhorn"></i>
+                    <h3 class="box-title">Questions Found<label style="margin-left:10px" class=" label label-info">{{MainCtrl.questionCount}}</label> </h3>
+                </div><!-- /.box-header -->
+                <div class="box-body pre-scrollable " style="min-height:350px">
+                    <div ng-show="MainCtrl.isSearching" style="height:150px">
+                        <img src="https://d13yacurqjgara.cloudfront.net/users/8424/screenshots/1036999/dots_2.gif" />
+
+                    </div>
+                    <div ng-repeat="question in MainCtrl.foundedQuestions.items" class="callout callout-info">
+                        <a href=""> <h4 ng-bind-html="question.title" ng-click="MainCtrl.getAnswerbyID(question.question_id)"></h4></a>
+
+
+                        <p>
+                            <span ng-bind-html="question.body | limitTo:145 "></span>
+                            @*<a class="btn btn-block btn-primary" data-toggle="modal" data-target="#compose-modal"> Compose Message</a>*@
+                            <span ng-click="MainCtrl.getQuestion(question)" class="btn btn-primary btn-xs">Question Details   </span>
+                        </p>
+                    </div>
+
+                </div><!-- /.box-body -->
+            </div>
+
+        </div>
+        <div class="col-md-6">
+
+
+
+            <div class="box box-solid">
+                <div class="box-header">
+                    <h3 class="box-title">Answers Found <label style="margin-left:10px" class=" label label-info">{{MainCtrl.answerCount}}</label></h3>
+                </div><!-- /.box-header -->
+                <div class="box-body pre-scrollable" style="min-height:900px">
+                    <div class="box-group" id="accordion">
+                        <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
+                        <div class="panel box box-primary" ng-repeat="ans in MainCtrl.foundedAnswers">
+                            <div class="box-header">
+                                <h4 class="box-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#{{ans.answer_id}}">
+                                        <span ng-bind-html="ans.body"></span>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="{{ans.answer_id}}" class="panel-collapse collapse in">
+                                <div class="box-body" ng-bind-html="ans.body">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div><!-- /.box-body -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Question MODAL -->
+    <div class="modal fade" id="questionModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:960px">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><i class="fa fa-envelope-o"></i> Question Details</h4>
+                </div>
+                <div class="small-box bg-yellow">
+                    <div class="inner">
+                        <h3>
+                            Answers :{{MainCtrl.selectQuestion.answer_count}}
+                        </h3>
+
+                    </div>
+                    <div class="icon">
+                        <img ng-src="" />
+                    </div>
+                    <a href="#" class="small-box-footer">
+                        User : {{MainCtrl.selectQuestion.owner.display_name}} <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="box box-info">
+                        <div class="box-header">
+                            <h3 class="box-title">{{MainCtrl.selectQuestion.title}}</h3>
+                            <div class="box-tools pull-right">
+                                <div>
+                                    Solved? <label class="label {{MainCtrl.selectQuestion.is_answered ? 'label-success' : 'label-warning' }}">
+                                        {{MainCtrl.selectQuestion.is_answered ? "Yes" : "No" }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <p ng-bind-html="MainCtrl.selectQuestion.body">
+
+
+                            </p>
+                        </div><!-- /.box-body -->
+                        <div class="box-footer">
+                            <p>
+                                <a ng-href="{{MainCtrl.selectQuestion.link}}"> See it on Stackovflow.com</a>
+                            </p>
+                        </div><!-- /.box-footer-->
+                    </div>
+
+
+                </div>
+
+                <div class="modal-footer clearfix">
+
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+
+                    <button type="submit" class="btn btn-primary pull-left"><i class="fa fa-envelope"></i> Forward Message</button>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+
+</div>

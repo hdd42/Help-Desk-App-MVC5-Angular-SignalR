@@ -1,0 +1,50 @@
+﻿@using HelpDeskTicketingApp.Models
+@model  CreateIssueViewModel
+@{
+
+    ViewBag.Title = "AddTicket";
+}
+
+
+
+  
+        
+    
+        
+      
+
+
+
+<div class="col-md-12">
+    <div class="box box-primary">
+        <div class="box-header">
+            <h3 class="box-title"><i class="fa fa-code"></i> Create New Ticket</h3>
+        </div>
+        <div class="box-body">
+           @using (Html.BeginForm())
+           {
+            <div>
+                <p>Select Issue Type</p>
+                <div class="form-group">
+                    @Html.DropDownListFor(m => m.SelectedIssueTypeId, new SelectList(Model.Types, "Value", "Display"), "-Issue Type-", new { @class="form-control" })
+                </div>
+            </div>
+
+            <div>
+                <p>
+                    Issue Description:<br />
+                </p>
+                <div class="form-group ">
+                    @Html.TextAreaFor(m => m.IssueDescription, new { @class = "form-control" })
+                </div>
+                </div>
+
+
+
+            <input type="submit" class="btn btn-default" value="Submit Ticket" />
+
+            }
+
+        </div><!-- /.box-body -->
+    </div><!-- /.box -->
+</div>

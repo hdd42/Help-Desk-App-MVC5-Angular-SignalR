@@ -1,0 +1,180 @@
+﻿@using HelpDeskTicketingApp.Models
+@model AdmIssueViewModel
+@{
+    ViewBag.Title = "UpdateTicket";
+}
+
+<div class="row">
+
+    <div class="col-md-3">
+
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-bullhorn"></i>
+                <h3 class="box-title">Update Ticket</h3>
+            </div><!-- /.box-header -->
+            <div class="box-body">
+                
+                @using (Html.BeginForm("UpdateTicket","Admin",FormMethod.Post,new{ @id = "updateTicketForm"}))
+                {
+                @Html.ValidationSummary()
+
+                <div class="form-group">
+                    @Html.LabelFor(i => i.Users)
+                    @Html.DropDownListFor(i => i.User.UserId, new SelectList(Model.Users, "UserId", "UserName"), "-Select Reporting User-", new { @class = "form-control" })
+                 </div>
+
+
+                <div class="form-group">
+                @Html.LabelFor(i => i.IssueTypes)
+                @Html.DropDownListFor(i => i.IssueType.IssueTypeId, new SelectList(Model.IssueTypes, "IssueTypeId", "IssueTypeDesc"), "-Select Issue Type-", new { @class = "form-control" })
+                @Html.LabelFor(i => i.IssueDesc)
+                @Html.TextAreaFor(i => i.IssueDesc, new { @class = "form-control" })
+                </div>
+                    
+                <div class="form-group">
+                @Html.LabelFor(i => i.DateReported)
+                @Html.TextBoxFor(i => i.DateReported, new { @class = "form-control" })
+                    </div>
+                   
+                <div class="form-group">
+                @Html.LabelFor(i => i.DateResolved)
+                @Html.TextBoxFor(i => i.DateResolved, new { @class = "form-control" })
+                    </div>
+                   
+                <div class="form-group">
+                @Html.LabelFor(i => i.IsAssigned)
+                @Html.TextBoxFor(i => i.IsAssigned, new { @class = "form-control", @readonly = "readonly" })
+                    </div>
+                  <div class="form-group">
+                      <input type="hidden" value="@Model.IssueId" name="id" />
+                      <input type="submit" class="btn btn-info" value="Update Ticket" />
+                  </div>
+
+                   
+                }
+
+            </div><!-- /.box-body -->
+        </div>
+    </div>
+    <div class="col-md-4">
+
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-bullhorn"></i>
+                <h3 class="box-title">Resolution</h3>
+            </div><!-- /.box-header -->
+            <div class="box-body">
+               
+               
+                    <h2>Resolution</h2>
+
+                    @if (@Model.IsAssigned == false)
+                    {
+                        <p> Ticket has not been assigned. Please assign Ticket to at least one technician.</p>
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            @Html.LabelFor(i => i.Resolution.IsResolved)<br/>
+                            @(Model.Resolution.IsResolved ? "Yes" : "Not Yet!")
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(i => i.Resolution.ResolutionDesc)
+                            @Html.TextBoxFor(i => i.Resolution.ResolutionDesc, new { @class = "form-control", @readonly = "readonly" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(i => i.Resolution.Notes)<br />
+                            @Html.TextAreaFor(i => i.Resolution.Notes, new { @class = "form-control", @readonly = "readonly" })<br />
+                        </div>
+                        <div class="form-group">
+                            @(Html.ActionLink("Resolve Issue", "Resolution", "Technician", new { id = Model.Resolution.ResolutionId }, new { @class = "btn btn-info" }))
+                        </div>
+
+                    }
+
+
+
+
+                </div><!-- /.box-body -->
+        </div>
+
+    </div>
+
+    <div class="col-md-5">
+
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-bullhorn"></i>
+                <h3 class="box-title">Assigned Technician</h3>
+            </div><!-- /.box-header -->
+            <div class="box-body">
+             
+                <table class="table table-bordered table-striped">
+                    <tr><th></th></tr>
+                    @foreach (var t in Model.AssignedTechs)
+                    {
+                        <tr>
+                            <td>@t.UserName</td>
+                        </tr>
+                    }
+
+
+                </table>
+
+                <p> Assign Technician to Ticket</p>
+
+                @using (Html.BeginForm("AssignTech", "Admin", FormMethod.Post, new { @id="assignTechForm"}))
+                {
+                    <div class="form-group">
+                        @Html.DropDownListFor(i => i.AssignToId, new SelectList(Model.Techs, "UserId", "UserName"), "-Select Technician-", new { @class = "form-control" })
+                    </div>
+
+                    <input type="hidden" value="@Model.IssueId" name="issueId" />
+                    <input type="submit" class="btn btn-info" value="Assign Technician" />
+
+                }
+            </div><!-- /.box-body -->
+        </div>
+
+
+
+    </div>
+    
+</div>
+
+
+@section Scripts {
+    
+    <script>
+        //updateTicketForm
+        $(function () {
+
+            $("#updateTicketForm").submit(function (e) {
+                var issueType = $("#IssueType_IssueTypeId");
+                var userSelected = $("#User_UserId");
+                if (!issueType.val() || !userSelected.val()) {
+                    alert("Please select an issue! / User");
+                    e.preventDefault();
+                    return;
+                }
+                //alert(issueType.val() + " : " + userSelected.val());
+            });
+
+
+            $("#assignTechForm").submit(function (e) {
+                var selectedTech = $("#AssignToId");
+               
+                if (!selectedTech.val() ) {
+                    alert("Please select a Tech to assigne! ");
+                    e.preventDefault();
+                    return;
+                }
+                //alert(issueType.val() + " : " + userSelected.val());
+            });
+
+        });
+
+    </script>
+    
+    }

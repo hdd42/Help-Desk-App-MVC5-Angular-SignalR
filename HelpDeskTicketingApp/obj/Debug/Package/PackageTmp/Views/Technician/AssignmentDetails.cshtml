@@ -1,0 +1,35 @@
+﻿@using HelpDeskTicketingApp.Models
+@model IEnumerable<AdmUserSelectionModel>
+
+@{
+    ViewBag.Title = "AssignmentDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Assignment Details</h2>
+
+<div>
+    <h4>Technicians Also Working on this Ticket</h4>
+    <hr />
+<table class="table">
+    <tr>
+        <th>
+            Technician Name
+        </th>
+
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            
+        </tr>
+    }
+</table>
+
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
