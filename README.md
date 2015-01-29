@@ -8,7 +8,12 @@ This is a sample Help Desk - Ticketing app for small to mid-level organizations
 build with ASP.NET MVC 5 / SignalR / Angular.js / Entity Fr6 / Bootstrap 3    
 N-tier App structure
 Adapter repository pattern
+Codefirst Auto migrations enabled
 
+3 main roles  : Admins , Technicians , General Users
+unlimited issue types & technician can be defined
 
 good for education purpose and It can be also used for smal organizations . 
 
+screen samples : 
+<a href="http://tinypic.com?ref=fokvio" target="_blank"><img src="http://i59.tinypic.com/fokvio.png" border="0" alt="Image and video hosting by TinyPic"></a>
